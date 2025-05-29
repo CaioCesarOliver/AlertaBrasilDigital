@@ -9,6 +9,8 @@ import { Bell, MessageSquare, Smartphone, Send, Settings, X } from "lucide-react
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
+
+
 const Alerts = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");

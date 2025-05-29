@@ -1,19 +1,65 @@
+import { useState, useEffect } from "react";
+
+import { AlertTriangle, MapPin, Thermometer, Droplets, Wind, Zap, Users, Eye } from "lucide-react";
+
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { AlertTriangle, MapPin, Thermometer, Droplets, Wind, Zap, Users, Eye } from "lucide-react";
-import { useState, useEffect } from "react";
+
+import useLocalStorage from "@/hooks/useLocalStorage";
+import useGeolocation from "@/hooks/useGeolocation";
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
+  iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
+});
+
+// Ícones customizados por severidade
+const getCustomIcon = (severity: string) => {
+  const color =
+    severity === "Crítico" ? "red" :
+    severity === "Alto" ? "orange" :
+    severity === "Baixo" ? "green" : "blue";
+
+  return new L.Icon({
+    iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
+    shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    shadowSize: [41, 41],
+  });
+};
 
 const Dashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [userPosition, setUserPosition] = useLocalStorage("USER_MARKER", {
+    latitude: -23.5505,
+    longitude: -46.6333, // São Paulo
+  });
+  const location = useGeolocation();
 
   useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
+    const interval = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (location.latitude && location.longitude) {
+      setUserPosition({
+        latitude: location.latitude,
+        longitude: location.longitude,
+      });
+    }
+  }, [location]);
 
   const alerts = [
     {
@@ -21,29 +67,35 @@ const Dashboard = () => {
       title: "Risco de Enchente - Rio Tietê",
       location: "São Paulo, SP",
       time: "15:30",
-      severity: "Alto"
+      severity: "Alto",
+      latitude: -23.5505,
+      longitude: -46.6333,
     },
     {
       type: "info",
       title: "Monitoramento Normal - Serra do Mar",
       location: "Santos, SP",
       time: "14:45",
-      severity: "Baixo"
+      severity: "Baixo",
+      latitude: -23.9608,
+      longitude: -46.3336,
     },
     {
       type: "critical",
       title: "Deslizamento Detectado",
       location: "Petrópolis, RJ",
       time: "13:20",
-      severity: "Crítico"
-    }
+      severity: "Crítico",
+      latitude: -22.5202,
+      longitude: -43.1926,
+    },
   ];
 
   const sensorData = [
     { name: "Temperatura", value: "28°C", icon: Thermometer, status: "normal" },
     { name: "Umidade", value: "75%", icon: Droplets, status: "warning" },
     { name: "Vento", value: "15 km/h", icon: Wind, status: "normal" },
-    { name: "Energia Solar", value: "85%", icon: Zap, status: "good" }
+    { name: "Energia Solar", value: "85%", icon: Zap, status: "good" },
   ];
 
   const getAlertVariant = (type: string) => {
@@ -72,21 +124,19 @@ const Dashboard = () => {
             <div>
               <h1 className="text-2xl font-bold text-gray-900">Dashboard Central</h1>
               <p className="text-sm text-gray-600">
-                {currentTime.toLocaleDateString('pt-BR')} - {currentTime.toLocaleTimeString('pt-BR')}
+                {currentTime.toLocaleDateString("pt-BR")} - {currentTime.toLocaleTimeString("pt-BR")}
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="bg-green-50 text-green-700">
-              <div className="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-              Sistema Online
-            </Badge>
-          </div>
+          <Badge variant="outline" className="bg-green-50 text-green-700">
+            <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
+            Sistema Online
+          </Badge>
         </div>
       </header>
 
       <main className="container mx-auto p-6">
-        {/* Map Section */}
+        {/* MAPA */}
         <Card className="mb-6">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -95,16 +145,43 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-96 bg-gradient-to-br from-blue-100 to-green-100 rounded-lg flex items-center justify-center border-2 border-dashed border-blue-300">
-              <div className="text-center">
-                <MapPin className="h-16 w-16 text-blue-500 mx-auto mb-4" />
-                <p className="text-lg font-semibold text-blue-700">Mapa Interativo do Brasil</p>
-                <p className="text-sm text-blue-600">Sensores IoT • Dados INMET • Previsões IA</p>
-                <Button className="mt-4" variant="outline">
-                  <Eye className="h-4 w-4 mr-2" />
-                  Visualizar Mapa Completo
-                </Button>
-              </div>
+            <div className="h-96 w-full rounded-md overflow-hidden z-0 border-2 border-dashed border-blue-300">
+              <MapContainer
+                center={[userPosition.latitude, userPosition.longitude]}
+                zoom={8}
+                scrollWheelZoom={true}
+                className="h-full w-full [&_.leaflet-bottom.leaflet-right]:hidden"
+              >
+                <TileLayer
+                  url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                />
+                <Marker position={[userPosition.latitude, userPosition.longitude]}>
+                  <Popup>Você está aqui</Popup>
+                </Marker>
+                {alerts.map((alert, i) => (
+                  <Marker
+                    key={i}
+                    position={[alert.latitude, alert.longitude]}
+                    icon={getCustomIcon(alert.severity)}
+                  >
+                    <Popup>
+                      <strong>{alert.title}</strong>
+                      <br />
+                      {alert.location} — {alert.severity}
+                    </Popup>
+                  </Marker>
+                ))}
+              </MapContainer>
+            </div>
+            <div className="text-center">
+              <MapPin className="h-16 w-16 text-blue-500 mx-auto mb-4" />
+              <p className="text-lg font-semibold text-blue-700">Mapa Interativo do Brasil</p>
+              <p className="text-sm text-blue-600">Sensores IoT • Dados INMET • Previsões IA</p>
+              <Button className="mt-4" variant="outline">
+                <Eye className="h-4 w-4 mr-2" />
+                Visualizar Mapa Completo
+              </Button>
             </div>
           </CardContent>
         </Card>

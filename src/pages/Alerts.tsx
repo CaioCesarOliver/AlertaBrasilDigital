@@ -25,7 +25,7 @@ const Alerts = () => {
       description: "Nível da água acima do normal. Evacuação preventiva recomendada.",
       affected: 1250
     },
-    {
+    { 
       id: 2,
       type: "Deslizamento",
       location: "Serra do Mar, Santos",

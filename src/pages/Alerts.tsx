@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, MessageSquare, Smartphone, Send, Settings, X } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 
 const Alerts = () => {
@@ -16,6 +16,9 @@ const Alerts = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedAlert, setSelectedAlert] = useState(null);
+
+  // Estado para controlar a animação da modal
+  const [showModalContent, setShowModalContent] = useState(false);
 
   const activeAlerts = [
     {
@@ -57,6 +60,7 @@ const Alerts = () => {
       default: return "border-gray-400";
     }
   };
+
   const getTextColor = (severity: string) => {
     switch (severity) {
       case "Crítico": return "text-red-600";
@@ -66,7 +70,6 @@ const Alerts = () => {
       default: return "text-gray-600";
     }
   };
-
 
   const getShadowColor = (severity: string) => {
     switch (severity) {
@@ -84,9 +87,21 @@ const Alerts = () => {
   };
 
   const closeModal = () => {
-    setSelectedAlert(null);
-    setIsModalOpen(false);
+    // inicia animação de fechamento
+    setShowModalContent(false);
+    // após 300ms, fecha realmente a modal e limpa o alert
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedAlert(null);
+    }, 300);
   };
+
+  // Ao abrir modal, ativa animação de entrada
+  useEffect(() => {
+    if (isModalOpen) {
+      setTimeout(() => setShowModalContent(true), 10);
+    }
+  }, [isModalOpen]);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -156,7 +171,12 @@ const Alerts = () => {
       {isModalOpen && selectedAlert && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div
-            className={`bg-white w-full max-w-md h-[80vh] overflow-y-auto rounded-lg shadow-lg border-8 ${getBorderColor(selectedAlert.severity)} relative p-6`}
+            className={`
+              bg-white w-full max-w-md h-[80vh] overflow-y-auto rounded-lg shadow-lg border-8
+              ${getBorderColor(selectedAlert.severity)} relative p-6
+              transform transition-all duration-300 ease-in-out
+              ${showModalContent ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+            `}
             style={{ boxShadow: `0 0 15px 5px ${getShadowColor(selectedAlert.severity)}` }}
           >
             <button

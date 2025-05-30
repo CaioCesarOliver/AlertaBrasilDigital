@@ -1,3 +1,5 @@
+import ThemeToggle from "@/components/ui/themeToggle";
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,8 +27,13 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <SidebarProvider>
-          <div className="min-h-screen flex w-full">
-            <AppSidebar />
+          <div className="min-h-screen flex w-full bg-background text-foreground dark:bg-gray-900 dark:text-white transition-colors duration-500">
+            <div className="flex flex-col">
+              <div className="p-4 border-b border-border">
+                <ThemeToggle />
+              </div>
+              <AppSidebar />
+            </div>
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Index />} />

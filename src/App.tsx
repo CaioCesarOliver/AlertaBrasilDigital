@@ -1,4 +1,5 @@
 import ThemeToggle from "@/components/ui/themeToggle";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";

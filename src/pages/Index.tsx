@@ -42,7 +42,7 @@ const Index = () => {
 
   return (
     <div className="border-b bg-white/80 dark:bg-black/90 backdrop-blur-sm sticky top-0 z-50">
-      <header className="border-b bg-white/80 dark:bg-black/90 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-white/80 dark:bg-gray-900 dark:border-gray-800">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <SidebarTrigger />

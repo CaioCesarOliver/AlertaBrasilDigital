@@ -1,4 +1,5 @@
 
+import ThemeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -55,7 +56,7 @@ const Community = () => {
       id: 2,
       title: "Operação de Drones de Resgate",
       duration: "4 horas",
-      difficulty: "Avançado", 
+      difficulty: "Avançado",
       points: 250,
       completed: 34,
       type: "Técnico"
@@ -95,7 +96,7 @@ const Community = () => {
       type: "Alagamento",
       location: "Baixada Santista",
       reportedBy: "Carlos R.",
-      time: "há 2 horas", 
+      time: "há 2 horas",
       severity: "Crítico",
       verified: true
     }
@@ -131,16 +132,21 @@ const Community = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Coordenação Comunitária</h1>
-            <p className="text-sm text-gray-600">
-              Voluntários, treinamentos e comunicação em tempo real
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Coordenação Comunitária
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Voluntários, treinamentos e comunicação em tempo real
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -313,8 +319,8 @@ const Community = () => {
                         <span>{training.completed}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
                           style={{ width: `${training.completed}%` }}
                         ></div>
                       </div>
@@ -410,9 +416,8 @@ const Community = () => {
                       { name: "# coordenacao", users: 12, active: false },
                       { name: "# treinamentos", users: 67, active: false }
                     ].map((channel, index) => (
-                      <div key={index} className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                        channel.active ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
-                      }`}>
+                      <div key={index} className={`p-3 rounded-lg cursor-pointer transition-colors ${channel.active ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
+                        }`}>
                         <div className="flex items-center justify-between">
                           <span className="font-medium">{channel.name}</span>
                           <span className="text-sm text-gray-600">{channel.users}</span>
@@ -494,7 +499,7 @@ const Community = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium">Descrição</label>
-                    <textarea 
+                    <textarea
                       className="w-full p-2 border rounded-lg min-h-20"
                       placeholder="Descreva o risco observado..."
                     />

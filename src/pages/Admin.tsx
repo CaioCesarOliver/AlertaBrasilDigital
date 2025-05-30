@@ -1,4 +1,4 @@
-
+import ThemeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -23,7 +23,7 @@ const Admin = () => {
     {
       id: "AB-002",
       name: "Centro Comunitário Norte",
-      location: "Guarulhos, SP", 
+      location: "Guarulhos, SP",
       capacity: 300,
       occupied: 280,
       status: "Quase Lotado",
@@ -63,7 +63,7 @@ const Admin = () => {
     },
     {
       id: "EQ-003",
-      name: "Equipe Gamma", 
+      name: "Equipe Gamma",
       members: 15,
       status: "Em Trânsito",
       mission: "Evacuação",
@@ -83,7 +83,7 @@ const Admin = () => {
   const getStatusColor = (status: string) => {
     switch (status) {
       case "Operacional":
-      case "Disponível": 
+      case "Disponível":
       case "Standby": return "bg-green-500";
       case "Quase Lotado":
       case "Em Trânsito": return "bg-orange-500";
@@ -103,18 +103,24 @@ const Admin = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Portal da Defesa Civil</h1>
-            <p className="text-sm text-gray-600">
-              Gestão de recursos, abrigos e coordenação de equipes
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Portal da Defesa Civil</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Gestão de recursos, abrigos e coordenação de equipes
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
+
+
+
 
       <main className="container mx-auto p-6">
         <Tabs defaultValue="overview" className="space-y-6">
@@ -391,13 +397,12 @@ const Admin = () => {
                           </p>
                         </div>
                       </div>
-                      <Badge className={`${
-                        getAvailabilityPercentage(supply.available, supply.total) > 50 
-                          ? "bg-green-500" 
-                          : getAvailabilityPercentage(supply.available, supply.total) > 20
-                            ? "bg-orange-500"
-                            : "bg-red-500"
-                      } text-white`}>
+                      <Badge className={`${getAvailabilityPercentage(supply.available, supply.total) > 50
+                        ? "bg-green-500"
+                        : getAvailabilityPercentage(supply.available, supply.total) > 20
+                          ? "bg-orange-500"
+                          : "bg-red-500"
+                        } text-white`}>
                         {getAvailabilityPercentage(supply.available, supply.total)}% disponível
                       </Badge>
                     </div>

@@ -1,4 +1,5 @@
 import ThemeToggle from "@/components/ui/themeToggle";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -30,7 +31,6 @@ const App = () => (
           <div className="min-h-screen flex w-full bg-background text-foreground dark:bg-gray-900 dark:text-white transition-colors duration-500">
             <div className="flex flex-col">
               <div className="p-4 border-b border-border">
-                <ThemeToggle />
               </div>
               <AppSidebar />
             </div>

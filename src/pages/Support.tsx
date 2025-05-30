@@ -1,4 +1,4 @@
-
+import ThemeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -30,7 +30,7 @@ const Support = () => {
     {
       type: "Telegram",
       contact: "@DisasterRescueBR",
-      status: "Online", 
+      status: "Online",
       responseTime: "< 10 min",
       icon: MessageCircle
     },
@@ -63,18 +63,23 @@ const Support = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Suporte & Inclusão</h1>
-            <p className="text-sm text-gray-600">
-              Suporte multilíngue e recursos de acessibilidade
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Suporte & Inclusão</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Suporte multilíngue e recursos de acessibilidade
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
+
 
       <main className="container mx-auto p-6">
         <Tabs defaultValue="help" className="space-y-6">
@@ -153,11 +158,10 @@ const Support = () => {
                   {languages.map((language) => (
                     <div
                       key={language.code}
-                      className={`p-4 border rounded-lg cursor-pointer transition-all ${
-                        selectedLanguage === language.code
-                          ? "border-blue-500 bg-blue-50"
+                      className={`p-4 border rounded-lg cursor-pointer transition-all ${selectedLanguage === language.code
+                          ? "border-blue-500 bg-blue-50 dark:bg-transparent dark:text-white"
                           : "hover:border-gray-300"
-                      }`}
+                        }`}
                       onClick={() => setSelectedLanguage(language.code)}
                     >
                       <div className="flex items-center gap-3">
@@ -174,6 +178,7 @@ const Support = () => {
                 </div>
               </CardContent>
             </Card>
+
 
             <div className="grid md:grid-cols-2 gap-6">
               <Card>
@@ -397,7 +402,7 @@ const Support = () => {
                   </div>
                   <div>
                     <label className="text-sm font-medium">Mensagem</label>
-                    <textarea 
+                    <textarea
                       className="w-full p-2 border rounded-lg min-h-24"
                       placeholder="Descreva sua solicitação..."
                     />

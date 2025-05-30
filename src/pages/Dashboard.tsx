@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import ThemeToggle from "@/components/ui/themeToggle";
 import { AlertTriangle, MapPin, Thermometer, Droplets, Wind, Zap, Users, Eye } from "lucide-react";
 
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from "react-leaflet";
@@ -26,8 +26,8 @@ L.Icon.Default.mergeOptions({
 const getCustomIcon = (severity: string) => {
   const color =
     severity === "Crítico" ? "red" :
-    severity === "Alto" ? "orange" :
-    severity === "Baixo" ? "green" : "blue";
+      severity === "Alto" ? "orange" :
+        severity === "Baixo" ? "green" : "blue";
 
   return new L.Icon({
     iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-${color}.png`,
@@ -111,27 +111,24 @@ const Dashboard = () => {
       case "Crítico": return "bg-red-500";
       case "Alto": return "bg-orange-500";
       case "Baixo": return "bg-green-500";
-      default: return "bg-gray-500";
+      default: return "default";
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
             <div>
-              <h1 className="text-2xl font-bold text-gray-900">Dashboard Central</h1>
-              <p className="text-sm text-gray-600">
-                {currentTime.toLocaleDateString("pt-BR")} - {currentTime.toLocaleTimeString("pt-BR")}
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Central de Alertas</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Sistema de notificações SMS, WhatsApp e Push
               </p>
             </div>
           </div>
-          <Badge variant="outline" className="bg-green-50 text-green-700">
-            <div className="w-2 h-2 bg-green-500 rounded-full mr-2" />
-            Sistema Online
-          </Badge>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -145,7 +142,7 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-96 w-full rounded-md overflow-hidden z-0 border-2 border-dashed border-blue-300">
+            <div className="h-96 w-full rounded-md overflow-hidden z-10 border-2 border-dashed border-blue-300 relative">
               <MapContainer
                 center={[userPosition.latitude, userPosition.longitude]}
                 zoom={8}
@@ -232,10 +229,14 @@ const Dashboard = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-bold">{sensor.value}</p>
-                      <div className={`w-2 h-2 rounded-full ${
-                        sensor.status === 'good' ? 'bg-green-500' :
-                        sensor.status === 'warning' ? 'bg-orange-500' : 'bg-gray-500'
-                      }`}></div>
+                      <div
+                        className={`w-2 h-2 rounded-full ${sensor.status === "good"
+                            ? "bg-green-500"
+                            : sensor.status === "warning"
+                              ? "bg-orange-500"
+                              : "bg-gray-500"
+                          }`}
+                      ></div>
                     </div>
                   </div>
                 ))}
@@ -304,6 +305,7 @@ const Dashboard = () => {
         </div>
       </main>
     </div>
+
   );
 };
 

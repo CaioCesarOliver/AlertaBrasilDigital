@@ -100,7 +100,7 @@ const Evacuation = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-black">
-      <header className="bg-white border-b dark:bg-gray-950">
+      <header className="bg-white border-b  dark:bg-gray-900 dark:border-gray-800">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
@@ -291,7 +291,7 @@ const Evacuation = () => {
           </TabsContent>
 
           <TabsContent value="emergency" className="space-y-6">
-            <Card className="border-red-200 bg-red-50 dark:bg-gray-950 border-red-500">
+            <Card className="border-red-200 bg-red-50 dark:bg-gray-950">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-500">
                   <Shield className="h-5 w-5" />

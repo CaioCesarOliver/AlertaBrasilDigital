@@ -1,4 +1,5 @@
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import ThemeToggle from "@/components/ui/themeToggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -133,18 +134,22 @@ const Alerts = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Central de Alertas</h1>
-            <p className="text-sm text-gray-600">
-              Sistema de notificações SMS, WhatsApp e Push
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Central de Alertas</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Sistema de notificações SMS, WhatsApp e Push
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
+
 
       <main className="container mx-auto p-6">
         <Tabs defaultValue="active" className="space-y-6">

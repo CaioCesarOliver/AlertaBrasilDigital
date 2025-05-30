@@ -1,43 +1,24 @@
-import { useEffect, useState } from "react";
+import React from 'react';
+import useTheme from '@/hooks/useTheme';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
+
 
 export default function ThemeToggle() {
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        const root = window.document.documentElement;
-        const storedTheme = localStorage.getItem("theme");
-        const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        if (storedTheme === "dark" || (!storedTheme && prefersDark)) {
-            root.classList.add("dark");
-            setIsDark(true);
-        } else {
-            root.classList.remove("dark");
-            setIsDark(false);
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        const root = window.document.documentElement;
-        const newTheme = isDark ? "light" : "dark";
-
-        if (newTheme === "dark") {
-            root.classList.add("dark");
-        } else {
-            root.classList.remove("dark");
-        }
-
-        localStorage.setItem("theme", newTheme);
-        setIsDark(!isDark);
-    };
+    const { theme, toggleTheme } = useTheme();
 
     return (
         <button
+            aria-label="Toggle Theme"
             onClick={toggleTheme}
-            aria-label="Alternar tema"
-            className="text-2xl transition-transform duration-300 hover:scale-110 p-2"
+            className="p-2 rounded focus:outline-none focus:ring"
         >
-            <i className={`fas ${isDark ? "fa-sun text-white" : "fa-moon text-blue-500"}`}></i>
+            {theme === 'dark' ? (
+                <FontAwesomeIcon icon={faSun} className="text-white w-5 h-5" />
+            ) : (
+                <FontAwesomeIcon icon={faMoon} className="text-blue-700 w-5 h-5" />
+            )}
         </button>
     );
 }

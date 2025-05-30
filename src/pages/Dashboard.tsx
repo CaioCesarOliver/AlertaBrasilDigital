@@ -128,10 +128,9 @@ const Dashboard = () => {
               </p>
             </div>
           </div>
-          <ThemeToggle/>
+          <ThemeToggle />
         </div>
       </header>
-
 
       <main className="container mx-auto p-6">
         {/* MAPA */}
@@ -143,7 +142,7 @@ const Dashboard = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="h-96 w-full rounded-md overflow-hidden z-0 border-2 border-dashed border-blue-300">
+            <div className="h-96 w-full rounded-md overflow-hidden z-10 border-2 border-dashed border-blue-300 relative">
               <MapContainer
                 center={[userPosition.latitude, userPosition.longitude]}
                 zoom={8}
@@ -230,9 +229,14 @@ const Dashboard = () => {
                     </div>
                     <div className="text-right">
                       <p className="font-bold">{sensor.value}</p>
-                      <div className={`w-2 h-2 rounded-full ${sensor.status === 'good' ? 'bg-green-500' :
-                        sensor.status === 'warning' ? 'bg-orange-500' : 'bg-gray-500'
-                        }`}></div>
+                      <div
+                        className={`w-2 h-2 rounded-full ${sensor.status === "good"
+                            ? "bg-green-500"
+                            : sensor.status === "warning"
+                              ? "bg-orange-500"
+                              : "bg-gray-500"
+                          }`}
+                      ></div>
                     </div>
                   </div>
                 ))}
@@ -301,6 +305,7 @@ const Dashboard = () => {
         </div>
       </main>
     </div>
+
   );
 };
 

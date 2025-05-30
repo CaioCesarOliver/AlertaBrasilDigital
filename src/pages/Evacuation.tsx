@@ -291,7 +291,7 @@ const Evacuation = () => {
           </TabsContent>
 
           <TabsContent value="emergency" className="space-y-6">
-            <Card className="border-red-200 bg-red-50 dark:bg-gray-950 border-red-500">
+            <Card className="border-red-200 bg-red-50 dark:bg-gray-950">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-red-500">
                   <Shield className="h-5 w-5" />

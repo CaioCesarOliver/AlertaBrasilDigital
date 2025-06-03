@@ -320,15 +320,15 @@ const Alerts = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div
             className={`
-              bg-white w-full max-w-md h-[80vh] overflow-y-auto rounded-lg shadow-lg border-8
-              ${getBorderColor(selectedAlert.severity)} relative p-6
-              transform transition-all duration-300 ease-in-out
-              ${showModalContent ? "opacity-100 scale-100" : "opacity-0 scale-95"}
-            `}
+        bg-white dark:bg-gray-900 w-full max-w-md h-[80vh] overflow-y-auto rounded-lg shadow-lg border-2
+        ${getBorderColor(selectedAlert.severity)} relative p-6
+        transform transition-all duration-300 ease-in-out
+        ${showModalContent ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+      `}
             style={{ boxShadow: `0 0 15px 5px ${getShadowColor(selectedAlert.severity)}` }}
           >
             <button
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900"
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
               onClick={closeModal}
               aria-label="Fechar modal"
             >

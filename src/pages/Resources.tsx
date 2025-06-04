@@ -1,4 +1,4 @@
-
+import ThemeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ const Resources = () => {
       lastUpdate: "há 5 min"
     },
     {
-      id: "ES-002", 
+      id: "ES-002",
       name: "Estação Solar Norte",
       location: "Guarulhos, SP",
       batteryLevel: 92,
@@ -52,7 +52,7 @@ const Resources = () => {
       id: "WS-002",
       name: "Coleta Água da Chuva B",
       type: "Captação",
-      capacity: "500L/dia", 
+      capacity: "500L/dia",
       status: "Ativo",
       location: "Escola Municipal",
       maintenance: "Pendente"
@@ -87,16 +87,19 @@ const Resources = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Recursos Energéticos</h1>
-            <p className="text-sm text-gray-600">
-              Monitoramento de energia solar e sistemas de água
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Recursos Energéticos</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Monitoramento de energia solar e sistemas de água
+              </p>
+            </div>
           </div>
+          <ThemeToggle/>
         </div>
       </header>
 
@@ -317,10 +320,9 @@ const Resources = () => {
                       </div>
                       <div>
                         <p className="text-sm text-gray-600">Manutenção</p>
-                        <p className={`font-semibold ${
-                          system.maintenance === "Em dia" ? "text-green-600" : 
-                          system.maintenance === "Pendente" ? "text-orange-600" : "text-red-600"
-                        }`}>
+                        <p className={`font-semibold ${system.maintenance === "Em dia" ? "text-green-600" :
+                            system.maintenance === "Pendente" ? "text-orange-600" : "text-red-600"
+                          }`}>
                           {system.maintenance}
                         </p>
                       </div>
@@ -407,7 +409,7 @@ const Resources = () => {
               <CardContent>
                 <div className="space-y-4">
                   {[
-                    { 
+                    {
                       system: "Estação Solar Centro",
                       type: "Preventiva",
                       date: "2024-06-15",
@@ -415,7 +417,7 @@ const Resources = () => {
                       priority: "Média"
                     },
                     {
-                      system: "Sistema Purificação B", 
+                      system: "Sistema Purificação B",
                       type: "Corretiva",
                       date: "2024-06-10",
                       status: "Em Andamento",
@@ -423,7 +425,7 @@ const Resources = () => {
                     },
                     {
                       system: "Estação Solar Oeste",
-                      type: "Emergencial", 
+                      type: "Emergencial",
                       date: "2024-06-08",
                       status: "Concluída",
                       priority: "Crítica"
@@ -439,8 +441,8 @@ const Resources = () => {
                       <div className="flex items-center gap-2">
                         <Badge className={
                           maintenance.priority === "Crítica" ? "bg-red-500" :
-                          maintenance.priority === "Alta" ? "bg-orange-500" :
-                          maintenance.priority === "Média" ? "bg-yellow-500" : "bg-green-500"
+                            maintenance.priority === "Alta" ? "bg-orange-500" :
+                              maintenance.priority === "Média" ? "bg-yellow-500" : "bg-green-500"
                         }>
                           {maintenance.priority}
                         </Badge>

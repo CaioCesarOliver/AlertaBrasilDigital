@@ -1,4 +1,4 @@
-
+import themeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Navigation, Shield, Clock, Users, Download } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import ThemeToggle from "@/components/ui/themeToggle";
 
 const Evacuation = () => {
   const [destination, setDestination] = useState("");
@@ -26,7 +27,7 @@ const Evacuation = () => {
     {
       id: 2,
       name: "Escola Municipal Santos Dumont",
-      address: "Av. Paulista, 456 - Bela Vista", 
+      address: "Av. Paulista, 456 - Bela Vista",
       capacity: 300,
       occupied: 280,
       distance: "1.8 km",
@@ -55,7 +56,7 @@ const Evacuation = () => {
     {
       id: 2,
       name: "Rota Sul - Via Expressa",
-      duration: "22 min", 
+      duration: "22 min",
       difficulty: "Moderada",
       type: "Urbana",
       status: "Congestionada"
@@ -98,16 +99,22 @@ const Evacuation = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Plano de Evacuação</h1>
-            <p className="text-sm text-gray-600">
-              Rotas dinâmicas GPS e zonas seguras
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b  dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-blue-400">
+                Plano de Evacuação
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-white">
+                Rotas dinâmicas GPS e zonas seguras
+              </p>
+            </div>
           </div>
+
+          <ThemeToggle />
         </div>
       </header>
 
@@ -203,7 +210,7 @@ const Evacuation = () => {
                         {zone.status}
                       </Badge>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                       <div>
                         <p className="text-gray-600">Capacidade</p>
@@ -264,19 +271,19 @@ const Evacuation = () => {
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="mt-6 grid md:grid-cols-3 gap-4">
                   <div className="text-center p-4 border rounded-lg">
                     <p className="text-2xl font-bold text-blue-600">15 MB</p>
-                    <p className="text-sm text-gray-600">Região Baixada</p>
+                    <p className="text-sm text-gray-600 dark:text-white">Região Baixada</p>
                   </div>
                   <div className="text-center p-4 border rounded-lg">
                     <p className="text-2xl font-bold text-green-600">Offline</p>
-                    <p className="text-sm text-gray-600">Status do Cache</p>
+                    <p className="text-sm text-gray-600 dark:text-white">Status do Cache</p>
                   </div>
                   <div className="text-center p-4 border rounded-lg">
                     <p className="text-2xl font-bold text-orange-600">72h</p>
-                    <p className="text-sm text-gray-600">Última Atualização</p>
+                    <p className="text-sm text-gray-600 dark:text-white">Última Atualização</p>
                   </div>
                 </div>
               </CardContent>
@@ -284,19 +291,19 @@ const Evacuation = () => {
           </TabsContent>
 
           <TabsContent value="emergency" className="space-y-6">
-            <Card className="border-red-200 bg-red-50">
+            <Card className="border-red-200 bg-red-50 dark:bg-gray-950">
               <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-red-700">
+                <CardTitle className="flex items-center gap-2 text-red-500">
                   <Shield className="h-5 w-5" />
                   Evacuação de Emergência
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <p className="text-red-700">
+                  <p className="text-red-700 dark:text-red-500">
                     Use apenas em situações de emergência real. Este botão ativará:
                   </p>
-                  <ul className="list-disc list-inside text-red-700 space-y-1">
+                  <ul className="list-disc list-inside text-red-700 space-y-1 dark:text-red-500">
                     <li>Alerta geral para todos os dispositivos próximos</li>
                     <li>Rota de evacuação mais rápida disponível</li>
                     <li>Notificação automática para Defesa Civil</li>

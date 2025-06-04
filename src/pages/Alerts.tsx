@@ -1,19 +1,27 @@
-
 import { SidebarTrigger } from "@/components/ui/sidebar";
+import ThemeToggle from "@/components/ui/themeToggle";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bell, MessageSquare, Smartphone, Send, Settings } from "lucide-react";
-import { useState } from "react";
+import { Bell, MessageSquare, Smartphone, Send, Settings, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
+
+
 
 const Alerts = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [message, setMessage] = useState("");
   const { toast } = useToast();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedAlert, setSelectedAlert] = useState<any>(null);
+
+  // Estado para controlar a animação da modal
+  const [showModalContent, setShowModalContent] = useState(false);
 
   const activeAlerts = [
     {
@@ -25,7 +33,7 @@ const Alerts = () => {
       description: "Nível da água acima do normal. Evacuação preventiva recomendada.",
       affected: 1250
     },
-    { 
+    {
       id: 2,
       type: "Deslizamento",
       location: "Serra do Mar, Santos",
@@ -42,6 +50,70 @@ const Alerts = () => {
     { id: 3, type: "Push", recipient: "App Mobile", time: "15:28", status: "Visualizado" },
   ];
 
+  // Cores para severidade
+  const getSeverityColor = (severity: string) => {
+    switch (severity) {
+      case "Crítico": return "bg-red-500";
+      case "Alto": return "bg-orange-500";
+      case "Médio": return "bg-yellow-500";
+      case "Baixo": return "bg-green-500";
+      default: return "bg-gray-500";
+    }
+  };
+
+  const getBorderColor = (severity: string) => {
+    switch (severity) {
+      case "Crítico": return "border-red-600";
+      case "Alto": return "border-orange-500";
+      case "Médio": return "border-yellow-500";
+      case "Baixo": return "border-green-500";
+      default: return "border-gray-400";
+    }
+  };
+
+  const getTextColor = (severity: string) => {
+    switch (severity) {
+      case "Crítico": return "text-red-600";
+      case "Alto": return "text-orange-600";
+      case "Médio": return "text-yellow-600";
+      case "Baixo": return "text-green-600";
+      default: return "text-gray-600";
+    }
+  };
+
+  const getShadowColor = (severity: string) => {
+    switch (severity) {
+      case "Crítico": return "rgba(220,38,38,0.6)";   // vermelho
+      case "Alto": return "rgba(249,115,22,0.6)";     // laranja
+      case "Médio": return "rgba(202,138,4,0.6)";     // amarelo
+      case "Baixo": return "rgba(22,163,74,0.6)";     // verde
+      default: return "rgba(107,114,128,0.6)";        // cinza
+    }
+  };
+
+  const openModal = (alert: any) => {
+    setSelectedAlert(alert);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    // inicia animação de fechamento
+    setShowModalContent(false);
+    // após 300ms, fecha realmente a modal e limpa o alert
+    setTimeout(() => {
+      setIsModalOpen(false);
+      setSelectedAlert(null);
+    }, 300);
+  };
+
+  // Ao abrir modal, ativa animação de entrada
+  useEffect(() => {
+    if (isModalOpen) {
+      setTimeout(() => setShowModalContent(true), 10);
+    }
+  }, [isModalOpen]);
+
+  // Função para enviar alerta via toast
   const handleSendAlert = () => {
     if (!phoneNumber || !message) {
       toast({
@@ -61,29 +133,23 @@ const Alerts = () => {
     setMessage("");
   };
 
-  const getSeverityColor = (severity: string) => {
-    switch (severity) {
-      case "Crítico": return "bg-red-500";
-      case "Alto": return "bg-orange-500";
-      case "Médio": return "bg-yellow-500";
-      case "Baixo": return "bg-green-500";
-      default: return "bg-gray-500";
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Central de Alertas</h1>
-            <p className="text-sm text-gray-600">
-              Sistema de notificações SMS, WhatsApp e Push
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Central de Alertas</h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Sistema de notificações SMS, WhatsApp e Push
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
+
 
       <main className="container mx-auto p-6">
         <Tabs defaultValue="active" className="space-y-6">
@@ -94,14 +160,15 @@ const Alerts = () => {
             <TabsTrigger value="config">Configurações</TabsTrigger>
           </TabsList>
 
+          {/* Aba Alertas Ativos */}
           <TabsContent value="active" className="space-y-4">
             <div className="grid gap-4">
               {activeAlerts.map((alert) => (
-                <Card key={alert.id} className="border-l-4 border-l-red-500">
+                <Card key={alert.id} className={`border-l-4 ${getBorderColor(alert.severity)}`}>
                   <CardHeader>
                     <div className="flex items-center justify-between">
                       <CardTitle className="flex items-center gap-2">
-                        <Bell className="h-5 w-5 text-red-600" />
+                        <Bell className={`h-5 w-5 ${getTextColor(alert.severity)}`} />
                         {alert.type} - {alert.location}
                       </CardTitle>
                       <Badge className={`${getSeverityColor(alert.severity)} text-white`}>
@@ -120,10 +187,10 @@ const Alerts = () => {
                       </AlertDescription>
                     </Alert>
                     <div className="flex gap-2 mt-4">
-                      <Button size="sm" className="bg-red-600 hover:bg-red-700">
+                      <Button size="sm" className={`bg-red-600 hover:bg-red-700`}>
                         Enviar Alerta Geral
                       </Button>
-                      <Button size="sm" variant="outline">
+                      <Button size="sm" variant="outline" onClick={() => openModal(alert)}>
                         Detalhes
                       </Button>
                     </div>
@@ -133,6 +200,7 @@ const Alerts = () => {
             </div>
           </TabsContent>
 
+          {/* Aba Enviar Alerta */}
           <TabsContent value="send" className="space-y-6">
             <div className="grid lg:grid-cols-2 gap-6">
               <Card>
@@ -179,12 +247,12 @@ const Alerts = () => {
                     "🚨 ALERTA ENCHENTE: Evacue a área imediatamente. Busque local seguro em terreno elevado.",
                     "⚠️ RISCO DESLIZAMENTO: Afaste-se de encostas. Procure abrigo em local seguro.",
                     "🔥 INCÊNDIO FLORESTAL: Mantenha-se longe da área. Siga rotas de evacuação.",
-                    "💧 QUALIDADE DA ÁGUA: Água imprópria para consumo. Use apenas água tratada."
-                  ].map((template, index) => (
+                    "🌪️ TEMPORAL FORTE: Proteja-se em local seguro. Evite sair até novo aviso.",
+                  ].map((template, i) => (
                     <Button
-                      key={index}
+                      key={i}
                       variant="outline"
-                      className="w-full text-left justify-start h-auto p-3"
+                      className="text-left"
                       onClick={() => setMessage(template)}
                     >
                       {template}
@@ -195,88 +263,87 @@ const Alerts = () => {
             </div>
           </TabsContent>
 
-          <TabsContent value="history" className="space-y-4">
+          {/* Aba Histórico */}
+          <TabsContent value="history">
+            <div className="space-y-4">
+              {notificationHistory.length === 0 && (
+                <p className="text-center text-gray-500">Nenhuma notificação enviada ainda.</p>
+              )}
+              {notificationHistory.map((item) => (
+                <Card key={item.id} className="border-l-4 border-blue-500">
+                  <CardContent className="flex justify-between items-center">
+                    <div>
+                      <p className="font-semibold">{item.type}</p>
+                      <p className="text-sm text-gray-600">{item.recipient}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-sm">{item.time}</p>
+                      <Badge className="bg-green-500 text-white">{item.status}</Badge>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+
+          {/* Aba Configurações */}
+          <TabsContent value="config" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Histórico de Notificações</CardTitle>
+                <CardTitle className="flex items-center gap-2">
+                  <Settings className="h-5 w-5 text-gray-600" />
+                  Configurações do Sistema
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="space-y-3">
-                  {notificationHistory.map((notification) => (
-                    <div key={notification.id} className="flex items-center justify-between p-3 border rounded-lg">
-                      <div className="flex items-center gap-3">
-                        <Badge variant="outline">{notification.type}</Badge>
-                        <span className="font-medium">{notification.recipient}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="text-sm text-gray-600">{notification.time}</span>
-                        <Badge className={
-                          notification.status === "Visualizado" ? "bg-green-500" :
-                          notification.status === "Entregue" ? "bg-blue-500" : "bg-orange-500"
-                        }>
-                          {notification.status}
-                        </Badge>
-                      </div>
-                    </div>
-                  ))}
+                <p className="text-gray-700">Aqui você pode configurar parâmetros do sistema, como números de emergência, horários de alerta, etc.</p>
+                {/* Exemplo de configuração */}
+                <div className="mt-4 space-y-4">
+                  <div>
+                    <label className="block mb-1 font-medium">Número de Emergência</label>
+                    <Input placeholder="+55 11 190" />
+                  </div>
+                  <div>
+                    <label className="block mb-1 font-medium">Horário para envio de alertas automáticos</label>
+                    <Input type="time" />
+                  </div>
+                  <Button>Salvar Configurações</Button>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
-
-          <TabsContent value="config" className="space-y-6">
-            <div className="grid lg:grid-cols-2 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Settings className="h-5 w-5 text-gray-600" />
-                    Configurações de API
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Twilio Account SID</label>
-                    <Input placeholder="ACxxxxxxxxxxxx" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Twilio Auth Token</label>
-                    <Input type="password" placeholder="••••••••••••••••" />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">WhatsApp Business API</label>
-                    <Input placeholder="wa_xxxxxxxxxx" />
-                  </div>
-                  <Button className="w-full">Salvar Configurações</Button>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle>Configurações de Notificação</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span>SMS Automático</span>
-                    <Button variant="outline" size="sm">Ativado</Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>WhatsApp Business</span>
-                    <Button variant="outline" size="sm">Ativado</Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Push Notifications</span>
-                    <Button variant="outline" size="sm">Ativado</Button>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span>Bluetooth Mesh (Offline)</span>
-                    <Button variant="outline" size="sm">Desativado</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-          </TabsContent>
         </Tabs>
       </main>
+
+      {/* Modal de detalhes do alerta */}
+      {isModalOpen && selectedAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div
+            className={`
+        bg-white dark:bg-gray-900 w-full max-w-md h-[80vh] overflow-y-auto rounded-lg shadow-lg border-2
+        ${getBorderColor(selectedAlert.severity)} relative p-6
+        transform transition-all duration-300 ease-in-out
+        ${showModalContent ? "opacity-100 scale-100" : "opacity-0 scale-95"}
+      `}
+            style={{ boxShadow: `0 0 15px 5px ${getShadowColor(selectedAlert.severity)}` }}
+          >
+            <button
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+              onClick={closeModal}
+              aria-label="Fechar modal"
+            >
+              <X />
+            </button>
+            <h2 className={`text-2xl font-bold mb-4 ${getTextColor(selectedAlert.severity)}`}>
+              {selectedAlert.type} - {selectedAlert.location}
+            </h2>
+            <p className="mb-2">{selectedAlert.description}</p>
+            <p><strong>Severidade:</strong> {selectedAlert.severity}</p>
+            <p><strong>Horário:</strong> {selectedAlert.time}</p>
+            <p><strong>Pessoas Afetadas:</strong> {selectedAlert.affected.toLocaleString()}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

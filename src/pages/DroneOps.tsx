@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Camera, MapPin, Battery, Radio, Upload, Download, Eye, Settings } from "lucide-react";
+import ThemeToggle from "@/components/ui/themeToggle";
 
 const DroneOps = () => {
   const activeDrones = [
@@ -19,7 +20,7 @@ const DroneOps = () => {
       pilot: "João Silva"
     },
     {
-      id: "DR-002", 
+      id: "DR-002",
       name: "Survey Beta",
       status: "Standby",
       battery: 95,
@@ -34,7 +35,7 @@ const DroneOps = () => {
       status: "Em Voo",
       battery: 45,
       location: "Rio Tietê",
-      altitude: "85m", 
+      altitude: "85m",
       mission: "Monitoramento",
       pilot: "Carlos Lima"
     }
@@ -52,7 +53,7 @@ const DroneOps = () => {
     {
       id: 2,
       name: "Avaliação Danos Enchente",
-      area: "Vale do Ribeira", 
+      area: "Vale do Ribeira",
       priority: "Média",
       status: "Planejada",
       progress: 0
@@ -93,18 +94,24 @@ const DroneOps = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b">
-        <div className="flex items-center gap-4 p-4">
-          <SidebarTrigger />
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">Operações com Drones</h1>
-            <p className="text-sm text-gray-600">
-              Busca, resgate e avaliação de danos
-            </p>
+    <div className="min-h-screen bg-gray-50 dark:bg-black">
+      <header className="bg-white border-b dark:bg-gray-900 dark:border-gray-800">
+        <div className="flex items-center justify-between gap-4 p-4">
+          <div className="flex items-center gap-4">
+            <SidebarTrigger />
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                Operações com Drones
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Busca, resgate e avaliação de danos
+              </p>
+            </div>
           </div>
+          <ThemeToggle />
         </div>
       </header>
+
 
       <main className="container mx-auto p-6">
         <Tabs defaultValue="telemetry" className="space-y-6">
@@ -227,8 +234,8 @@ const DroneOps = () => {
                         <span>{mission.progress}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
-                        <div 
-                          className="bg-blue-600 h-2 rounded-full" 
+                        <div
+                          className="bg-blue-600 h-2 rounded-full"
                           style={{ width: `${mission.progress}%` }}
                         ></div>
                       </div>
@@ -335,7 +342,7 @@ const DroneOps = () => {
                 <CardContent className="space-y-3">
                   {[
                     "Busca Serra do Mar - 15 waypoints",
-                    "Monitoramento Rio Tietê - 8 waypoints", 
+                    "Monitoramento Rio Tietê - 8 waypoints",
                     "Avaliação Zona Sul - 12 waypoints",
                     "Rota Emergência Centro - 6 waypoints"
                   ].map((route, index) => (

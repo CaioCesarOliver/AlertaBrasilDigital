@@ -1,9 +1,10 @@
-
+import themeToggle from "@/components/ui/themeToggle";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertTriangle, MapPin, Users, Zap, Shield, Bell } from "lucide-react";
 import { Link } from "react-router-dom";
+import ThemeToggle from "@/components/ui/themeToggle";
 
 const Index = () => {
   const features = [
@@ -40,40 +41,45 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-orange-50">
-      <header className="border-b bg-white/80 backdrop-blur-sm sticky top-0 z-50">
+    <div className="border-b bg-white/80 dark:bg-black/90 backdrop-blur-sm sticky top-0 z-50">
+      <header className="border-b bg-white/80 dark:bg-gray-900 dark:border-gray-800">
         <div className="flex items-center justify-between p-4">
           <div className="flex items-center gap-4">
             <SidebarTrigger />
             <div className="flex items-center gap-2">
-              <AlertTriangle className="h-8 w-8 text-blue-600" />
+              <AlertTriangle className="h-8 w-8 text-blue-600 dark:text-blue-400" />
               <div>
-                <h1 className="font-bold text-xl text-blue-900">DisasterRescueBR</h1>
-                <p className="text-sm text-gray-600">Preparação, Resposta e Recuperação</p>
+                <h1 className="font-bold text-xl text-blue-900 dark:text-blue-400">DisasterRescueBR</h1>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Preparação, Resposta e Recuperação</p>
               </div>
             </div>
           </div>
-          <Button asChild className="bg-blue-600 hover:bg-blue-800">
-            <Link to="/dashboard">Começar Agora</Link>
-          </Button>
+
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <Button asChild className="bg-blue-600 hover:bg-blue-800">
+              <Link to="/dashboard" className="dark:text-white">Começar Agora</Link>
+            </Button>
+          </div>
         </div>
       </header>
+
 
       <main className="container mx-auto px-4 py-8">
         {/* Hero Section */}
         <section className="text-center py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            <h2 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 dark:text-gray-300">
               Protegendo o Brasil contra{" "}
-              <span className="text-blue-600">Desastres Naturais</span>
+              <span className="text-blue-600 dark:text-blue-400">Desastres Naturais</span>
             </h2>
-            <p className="text-xl text-gray-600 mb-8 leading-relaxed">
+            <p className="text-xl text-gray-600 mb-8 leading-relaxed dark:text-gray-300">
               Plataforma inovadora e multidisciplinar para preparação, resposta e recuperação de desastres—
-              adaptada à geografia e realidades socioeconômicas do Brasil. Baixo custo, offline-friendly, 
+              adaptada à geografia e realidades socioeconômicas do Brasil. Baixo custo, offline-friendly,
               escalável desde aldeias quilombolas remotas até a megacidade de São Paulo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700">
+              <Button asChild size="lg" className="bg-blue-600 hover:bg-blue-700 dark:text-white">
                 <Link to="/dashboard">Explorar Dashboard</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
@@ -85,7 +91,7 @@ const Index = () => {
 
         {/* Features Grid */}
         <section className="py-16">
-          <h3 className="text-3xl font-bold text-center mb-12 text-gray-900">
+          <h3 className="text-3xl font-bold text-center mb-12 text-gray-900 dark:text-gray-300">
             Recursos Principais
           </h3>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -100,7 +106,7 @@ const Index = () => {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-gray-600 mb-4">
+                  <CardDescription className="text-gray-600 mb-4 dark:text-white">
                     {feature.description}
                   </CardDescription>
                   <Button asChild variant="outline" size="sm" className="w-full">
@@ -141,15 +147,15 @@ const Index = () => {
         {/* Getting Started */}
         <section className="py-16 text-center">
           <div className="max-w-3xl mx-auto">
-            <h3 className="text-3xl font-bold mb-6 text-gray-900">
+            <h3 className="text-3xl font-bold mb-6 text-gray-900 dark:text-gray-300">
               Pronto para Começar?
             </h3>
-            <p className="text-xl text-gray-600 mb-8">
-              Junte-se a comunidades, municípios e ONGs que já utilizam nossa plataforma 
+            <p className="text-xl text-gray-600 mb-8 dark:text-white">
+              Junte-se a comunidades, municípios e ONGs que já utilizam nossa plataforma
               para criar um Brasil mais resiliente a desastres naturais.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button asChild size="lg" className="bg-orange-600 hover:bg-orange-700">
+              <Button asChild size="lg" className="bg-blue-600 text-white hover:bg-blue-800">
                 <Link to="/dashboard">Iniciar Dashboard</Link>
               </Button>
               <Button asChild variant="outline" size="lg">

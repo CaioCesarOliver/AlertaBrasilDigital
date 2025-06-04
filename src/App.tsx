@@ -1,4 +1,3 @@
-import ThemeToggle from "@/components/ui/themeToggle";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import { Toaster } from "@/components/ui/toaster";
